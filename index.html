@@ -238,9 +238,9 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
       <button class="clear" id="qclear" hidden aria-label="Limpar busca">×</button>
     </div>
     <select class="sortsel" id="sort" aria-label="Ordenar">
-      <option value="rel">Destaques</option>
+      <option value="rel">Mais caros primeiro</option>
       <option value="menor">Menor preço</option>
-      <option value="maior">Maior preço</option>
+      <option value="maior">Maior preço (geral)</option>
       <option value="desc">Maior desconto</option>
       <option value="az">Nome (A-Z)</option>
     </select>
@@ -327,6 +327,7 @@ PRODUTOS.forEach(p => { p._b = norm(p.nome + ' ' + p.marca + ' ' + p.categoria +
 $('perkQtd').textContent = PRODUTOS.length + ' produtos disponíveis';
 
 const CATS = [...new Set(PRODUTOS.map(p => p.categoria))];
+const ORDEM_CAT = {}; CATS.forEach((c,i) => ORDEM_CAT[c] = i);
 let filtro = {cat:'Todos', marca:'Todas', q:'', sort:'rel'};
 let carrinho = {}, pagamento = 'pix';
 try {
@@ -364,7 +365,9 @@ function listar(){
     (filtro.marca === 'Todas' || p.marca === filtro.marca.toUpperCase()) &&
     (!filtro.q || filtro.q.split(/\s+/).every(t => p._b.includes(t))));
   const s = filtro.sort;
-  if (s === 'menor') l.sort((a,b) => (a.preco ?? 1e9) - (b.preco ?? 1e9));
+  if (s === 'rel') l.sort((a,b) =>
+    (ORDEM_CAT[a.categoria] - ORDEM_CAT[b.categoria]) || ((b.preco ?? -1) - (a.preco ?? -1)));
+  else if (s === 'menor') l.sort((a,b) => (a.preco ?? 1e9) - (b.preco ?? 1e9));
   else if (s === 'maior') l.sort((a,b) => (b.preco ?? -1) - (a.preco ?? -1));
   else if (s === 'desc') l.sort((a,b) => (b.desconto||0) - (a.desconto||0));
   else if (s === 'az') l.sort((a,b) => a.nome.localeCompare(b.nome,'pt-BR'));
