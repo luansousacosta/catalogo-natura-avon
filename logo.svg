@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Lidi Natura">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8c163"/>
+      <stop offset="52%" stop-color="#e5872a"/>
+      <stop offset="100%" stop-color="#c4531a"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="url(#lg)"/>
+  <g transform="rotate(-18 50 50)">
+    <path d="M50 21c13.5 10.5 19.5 22 19.5 32.5C69.5 65.5 61 74.5 50 80c-11-5.5-19.5-14.5-19.5-26.5C30.5 43 36.5 31.5 50 21Z"
+          fill="#fffdf9"/>
+    <path d="M50 77.5V27" fill="none" stroke="#e5872a" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+    <path d="M50 47c4.6-3.4 8-5.2 11.6-6.2M50 60c4.6-3.4 8-5.2 11.6-6.2M50 47c-4.6-3.4-8-5.2-11.6-6.2M50 60c-4.6-3.4-8-5.2-11.6-6.2"
+          fill="none" stroke="#e5872a" stroke-width="1.7" stroke-linecap="round" opacity=".32"/>
+  </g>
+</svg>

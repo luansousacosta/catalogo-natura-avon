@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Catálogo Natura &amp; Avon</title>
-<meta name="description" content="Catálogo de perfumaria e beleza Natura e Avon com preços especiais. Pix à vista ou cartão em até 3x. Peça pelo WhatsApp.">
+<title>Lidi Natura — Catálogo Natura &amp; Avon</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<meta name="description" content="Lidi Natura — catálogo de perfumaria e beleza Natura e Avon com preços especiais. Pix à vista ou cartão em até 3x. Peça pelo WhatsApp.">
 <meta name="theme-color" content="#fffdf9">
 <style>
 :root{
@@ -34,7 +35,8 @@ input,select,textarea{font:inherit;color:inherit}
 .brandbar{background:var(--bg)}
 .brandbar .wrap{display:flex;align-items:center;gap:14px;padding:16px 18px 12px}
 .mark{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}
-.mark .dot{width:38px;height:38px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;letter-spacing:-.03em}
+.mark .dot{width:42px;height:42px;flex:none;display:block;border-radius:50%;overflow:hidden;box-shadow:0 4px 12px -4px rgba(201,85,26,.55)}
+.mark .dot svg{display:block}
 .mark .txt{min-width:0}
 .mark .txt b{display:block;font-size:17.5px;font-weight:700;letter-spacing:-.02em;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mark .txt span{font-size:12px;color:var(--muted)}
@@ -45,6 +47,7 @@ input,select,textarea{font:inherit;color:inherit}
 /* ---------- hero ---------- */
 .hero{background:linear-gradient(135deg,#fdf0e0 0%,#fbf3e9 45%,#f4f1e6 100%);border-block:1px solid var(--line)}
 .hero .wrap{padding:34px 18px 30px;text-align:center}
+.eyebrow{display:inline-block;margin-bottom:12px;padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(217,102,31,.2);color:var(--brand);font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
 .hero h1{margin:0 0 8px;font-size:clamp(26px,5.4vw,40px);line-height:1.08;letter-spacing:-.035em;font-weight:800}
 .hero h1 em{font-style:normal;background:linear-gradient(100deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{margin:0 auto;max-width:52ch;color:var(--muted);font-size:15px}
@@ -195,8 +198,19 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 
 <div class="brandbar"><div class="wrap">
   <div class="mark">
-    <span class="dot" id="inicial">N</span>
-    <span class="txt"><b id="lojaNome">Catálogo Natura &amp; Avon</b><span>Revenda · Perfumaria &amp; Beleza</span></span>
+    <span class="dot" aria-hidden="true">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <defs><linearGradient id="lgH" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f8c163"/><stop offset="52%" stop-color="#e5872a"/><stop offset="100%" stop-color="#c4531a"/>
+        </linearGradient></defs>
+        <circle cx="50" cy="50" r="50" fill="url(#lgH)"/>
+        <g transform="rotate(-18 50 50)">
+          <path d="M50 21c13.5 10.5 19.5 22 19.5 32.5C69.5 65.5 61 74.5 50 80c-11-5.5-19.5-14.5-19.5-26.5C30.5 43 36.5 31.5 50 21Z" fill="#fffdf9"/>
+          <path d="M50 77.5V27" fill="none" stroke="#e5872a" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+          <path d="M50 47c4.6-3.4 8-5.2 11.6-6.2M50 60c4.6-3.4 8-5.2 11.6-6.2M50 47c-4.6-3.4-8-5.2-11.6-6.2M50 60c-4.6-3.4-8-5.2-11.6-6.2" fill="none" stroke="#e5872a" stroke-width="1.7" stroke-linecap="round" opacity=".32"/>
+        </g>
+    </span>
+    <span class="txt"><b id="lojaNome">Lidi Natura</b><span>Revenda Natura &amp; Avon · Perfumaria &amp; Beleza</span></span>
   </div>
   <button class="headcart" id="openCartTop">
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
@@ -205,6 +219,7 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 </div></div>
 
 <section class="hero"><div class="wrap">
+  <span class="eyebrow">Lidi Natura</span>
   <h1>Perfumaria &amp; Beleza<br><em>Natura e Avon</em></h1>
   <p>Produtos originais com preço de revenda. Monte seu pedido e finalize direto no WhatsApp.</p>
   <div class="perks">
@@ -241,7 +256,7 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 </div></main>
 
 <footer><div class="wrap">
-  <b id="footNome">Catálogo Natura &amp; Avon</b><br>
+  <b id="footNome">Lidi Natura</b><br>
   Pagamento em Pix à vista ou cartão em até 3x (com acréscimo da maquineta).<br>
   Sem reservas · Preços válidos enquanto durar o estoque.
   <div class="small">Revendedor(a) autônomo(a) de produtos Natura e Avon. Página independente, sem vínculo oficial com as marcas.</div>
@@ -290,7 +305,7 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
    ============================================================ */
 const CONFIG = {
   whatsapp: "5584986751867",        // 55 + DDD + número, só dígitos
-  loja: "Catálogo Natura & Avon",   // nome exibido no topo e no rodapé
+  loja: "Lidi Natura",              // nome exibido no topo e no rodapé
   taxaCartao: 7,                    // acréscimo do cartão, em %
   parcelas: 3                       // número máximo de parcelas no cartão
 };
@@ -303,11 +318,10 @@ const TAXA = 1 + CONFIG.taxaCartao / 100;
 
 $('lojaNome').textContent = CONFIG.loja;
 $('footNome').textContent = CONFIG.loja;
-$('inicial').textContent = (CONFIG.loja.replace(/^Cat.logo\s+/i,'').trim()[0] || 'N').toUpperCase();
 $('taxaTxt').textContent = '+' + CONFIG.taxaCartao + '% da maquineta';
 $('lblTaxa').textContent = 'Acréscimo cartão (' + CONFIG.taxaCartao + '%)';
 $('payCard').querySelector('b').textContent = 'Cartão até ' + CONFIG.parcelas + 'x';
-document.title = CONFIG.loja;
+document.title = CONFIG.loja + ' — Catálogo Natura & Avon';
 
 PRODUTOS.forEach(p => { p._b = norm(p.nome + ' ' + p.marca + ' ' + p.categoria + ' ' + (p.tamanho||'')); });
 $('perkQtd').textContent = PRODUTOS.length + ' produtos disponíveis';

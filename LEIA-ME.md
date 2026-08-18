@@ -1,4 +1,4 @@
-# Catálogo Online Natura & Avon
+# Lidi Natura — Catálogo Online
 
 Catálogo web com 417 produtos extraídos do PowerPoint `catalogo 548`. O cliente navega,
 seleciona os produtos, e finaliza o pedido direto no seu WhatsApp.
@@ -10,7 +10,7 @@ No `index.html`, perto do fim do arquivo, fica o bloco **CONFIGURAÇÃO**:
 ```js
 const CONFIG = {
   whatsapp: "5584986751867",        // 55 + DDD + número, só dígitos
-  loja: "Catálogo Natura & Avon",   // nome exibido no topo e no rodapé
+  loja: "Lidi Natura",              // nome exibido no topo e no rodapé
   taxaCartao: 7,                    // acréscimo do cartão, em %
   parcelas: 3                       // número máximo de parcelas no cartão
 };
