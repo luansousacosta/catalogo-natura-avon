@@ -1,0 +1,92 @@
+# Catálogo Online Natura & Avon
+
+Catálogo web com 417 produtos extraídos do PowerPoint `catalogo 548`. O cliente navega,
+seleciona os produtos, e finaliza o pedido direto no seu WhatsApp.
+
+## 1. Configuração (já preenchida)
+
+No `index.html`, perto do fim do arquivo, fica o bloco **CONFIGURAÇÃO**:
+
+```js
+const CONFIG = {
+  whatsapp: "5584986751867",        // 55 + DDD + número, só dígitos
+  loja: "Catálogo Natura & Avon",   // nome exibido no topo e no rodapé
+  taxaCartao: 7,                    // acréscimo do cartão, em %
+  parcelas: 3                       // número máximo de parcelas no cartão
+};
+```
+
+Para mudar a taxa do cartão ou o número de parcelas, altere só esses valores — o site
+recalcula tudo sozinho (preço parcelado nos produtos, total do carrinho e mensagem do WhatsApp).
+
+## Formas de pagamento
+
+- **Pix à vista** — é o preço que aparece em destaque em cada produto.
+- **Cartão em até 3x** — acréscimo de 7% (taxa da maquineta). O cliente escolhe no carrinho
+  e o total é recalculado na hora; cada produto já mostra "ou 3x de R$ XX,XX no cartão".
+
+## 2. Testar no computador
+
+Dê dois cliques em `index.html` — abre no navegador e funciona 100% offline.
+
+## 3. Colocar no ar (link para mandar aos clientes)
+
+**Opção mais fácil — Netlify Drop (grátis, 1 minuto, sem cadastro para testar):**
+1. Acesse https://app.netlify.com/drop
+2. Arraste a pasta `catalogo-online` inteira para a página
+3. Pronto: você recebe um link tipo `https://seunome.netlify.app` — é esse link que
+   você manda no WhatsApp, no status e na bio do Instagram
+
+Outras opções: GitHub Pages, Vercel, Cloudflare Pages — todas grátis, mesmo princípio
+(subir a pasta inteira, com a subpasta `img`).
+
+## 4. Como o cliente usa
+
+1. Busca ou filtra por categoria/marca (Natura ou Avon)
+2. Toca em **Adicionar** e ajusta a quantidade (limitada ao seu estoque)
+3. Toca em **Ver pedido**, escolhe **Pix à vista** ou **Cartão até 3x**, informa nome e observação
+4. Toca em **Finalizar no WhatsApp** → abre seu WhatsApp com o pedido já escrito:
+
+```
+Olá! Quero fazer um pedido do catálogo:
+
+1. ÁGUAS FLOR DE LARANJEIRA — NATURA 170 ML
+   2x R$ 64,90 = R$ 129,80
+
+Itens: 2
+Subtotal: R$ 129,80
+Pagamento: Cartão (acréscimo de 7% = R$ 9,09)
+*Total: R$ 138,89* — em até 3x de R$ 46,30
+(economia de R$ 104,00)
+
+Nome: Maria
+```
+
+O carrinho fica salvo no celular do cliente mesmo se ele fechar a página.
+
+## 5. Atualizar preços e estoque
+
+Todos os dados estão em `produtos.js`, um produto por linha:
+
+```js
+{"id":1,"nome":"ÁGUAS FLOR DE LARANJEIRA","marca":"NATURA","categoria":"Perfumaria Feminina",
+ "tamanho":"170 ML","de":116.9,"preco":64.9,"desconto":48,"estoque":2,"img":"001-....jpg"}
+```
+
+- `preco` = seu preço de venda à vista (Pix)
+- `de` = preço de mercado riscado
+- `estoque` = quantidade disponível (o cliente não consegue pedir mais que isso)
+- Para tirar um produto do ar, apague a linha dele ou coloque `"estoque":0`
+
+Depois de editar, salve o arquivo e suba a pasta de novo (no Netlify: arraste outra vez).
+
+## Observações sobre os dados
+
+- **417 produtos** (145 perfumaria feminina, 86 masculina, 98 corpo, 41 cabelos,
+  6 infantil, 41 rosto) — os 7 slides de capa/seção do PPT não viraram produto.
+- **3 produtos sem foto** no PPT original (Renew Sabonete Gel, Renew Sérum Vitamina C,
+  Renew Tônico Vitamina C) — aparecem com ícone no lugar da imagem.
+- **1 produto sem preço** no PPT original (Chronos Protetor Multiclareador 70 FPS) —
+  aparece como "Sob consulta" e vai para o WhatsApp como "preço a combinar".
+  Se quiser, defina o preço dele em `produtos.js`.
+- Imagens redimensionadas para 700px e comprimidas: 53 MB → 9 MB (carrega rápido no 4G).
