@@ -167,9 +167,17 @@ main .wrap{padding-top:20px;padding-bottom:10px}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--bg);z-index:70;display:flex;flex-direction:column;transform:translateX(101%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .drawer.on{transform:none}
 .dhead{display:flex;align-items:center;gap:10px;padding:18px;border-bottom:1px solid var(--line);background:var(--surface)}
-.dhead b{font-size:17px;letter-spacing:-.02em;margin-right:auto}
+.dhead b{font-size:17px;letter-spacing:-.02em}
 .dhead button{width:32px;height:32px;border-radius:50%;background:var(--cream);color:var(--muted);font-size:19px;line-height:1;display:grid;place-items:center}
-.ditems{flex:1 1 auto;min-height:78px;overflow:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.dbody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.dcount{margin-right:auto;font-size:12.5px;color:var(--muted);font-weight:600}
+.ditems{padding:14px 18px 4px;display:flex;flex-direction:column;gap:9px}
+.dbar{flex:none;display:flex;align-items:center;gap:12px;padding:12px 18px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface);box-shadow:0 -10px 26px -20px rgba(58,42,29,.6)}
+.dbar .resumo{line-height:1.2;min-width:0}
+.dbar .resumo span{display:block;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.dbar .resumo b{display:block;font-size:19px;font-weight:800;letter-spacing:-.03em}
+.trocar{font-size:11.5px;color:var(--brand);text-decoration:underline;font-weight:600}
+.dbar .btn{flex:1;justify-content:center;padding:13px 16px}
 .item{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px}
 .item .pic{width:62px;height:62px;flex:none;border-radius:9px;background:linear-gradient(160deg,#fdf7f0,#f7f0e6);display:grid;place-items:center;overflow:hidden}
 .item .pic img{width:100%;height:100%;object-fit:contain;padding:4px;mix-blend-mode:multiply}
@@ -183,7 +191,7 @@ main .wrap{padding-top:20px;padding-bottom:10px}
 .qty span{font-size:13px;font-weight:700;min-width:18px;text-align:center}
 .rm{color:#a89786;font-size:11.5px;text-decoration:underline}
 .item .val{margin-left:auto;font-weight:700;font-size:14px;white-space:nowrap}
-.dfoot{flex:none;border-top:1px solid var(--line);background:var(--surface);padding:16px 18px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.dfoot{border-top:1px solid var(--line);background:var(--surface);margin-top:14px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px}
 .paylabel{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .pay{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
 #boxParcelas label{display:block;margin-bottom:6px}
@@ -326,7 +334,8 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Seu pedido">
-  <div class="dhead"><b>Seu pedido</b><button id="closeCart" aria-label="Fechar">×</button></div>
+  <div class="dhead"><b>Seu pedido</b><span class="dcount" id="dcount"></span><button id="closeCart" aria-label="Fechar">×</button></div>
+  <div class="dbody">
   <div class="ditems" id="ditems"></div>
   <div class="dfoot" id="dfoot">
     <div>
@@ -350,11 +359,18 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
       <div class="tot"><span id="lblTotal">Total</span><b id="drawerTotal">R$ 0,00</b></div>
       <div class="parcinfo" id="parcInfo"></div>
     </div>
+    <button class="btn ghost" id="limpar">Esvaziar pedido</button>
+  </div>
+  </div>
+  <div class="dbar" id="dbar" hidden>
+    <div class="resumo">
+      <span id="barraLbl">Total</span><b id="barraVal">R$ 0,00</b>
+      <button class="trocar" id="irPagamento">à vista · alterar</button>
+    </div>
     <button class="btn wa" id="finalizar">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.03c-.24.68-1.4 1.3-1.94 1.38-.5.07-1.13.1-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.17-4.94-4.37-.14-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.66.5.24.58.82 2.01.89 2.16.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.58.17.29.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.41.29.14.46.12.63-.07.17-.19.72-.84.91-1.13.19-.29.39-.24.65-.14.26.09 1.69.8 1.98.94.29.14.48.22.55.34.07.12.07.7-.17 1.38Z"/></svg>
-      Finalizar no WhatsApp
+      Finalizar
     </button>
-    <button class="btn ghost" id="limpar">Esvaziar pedido</button>
   </div>
 </aside>
 
@@ -579,6 +595,11 @@ function atualizar(){
   $('barQtd').textContent = t.qtd + (t.qtd === 1 ? ' item' : ' itens') + (parcelado ? ' · no cartão' : ' · à vista');
   $('headQtd').textContent = t.qtd;
   $('drawerTotal').textContent = rotulo;
+  $('dcount').textContent = t.qtd ? t.qtd + (t.qtd === 1 ? ' item' : ' itens') : '';
+  $('dbar').hidden = !t.qtd;
+  $('barraLbl').textContent = parcelado ? 'No cartão' : 'Total';
+  $('barraVal').textContent = rotulo;
+  $('irPagamento').textContent = (parcelado ? t.n + 'x no cartão' : 'à vista') + ' · alterar';
   $('valSub').textContent = BRL(t.sub);
   $('linhaSub').hidden = parcelado;
   $('linhaTaxa').hidden = true;
@@ -625,6 +646,10 @@ function desenharItens(){
 
 /* ---------- interações ---------- */
 const abrir = v => { $('drawer').classList.toggle('on', v); $('overlay').classList.toggle('on', v); document.body.style.overflow = v ? 'hidden' : ''; };
+$('irPagamento').onclick = () => {
+  const box = document.querySelector('.dbody');
+  box.scrollTo({top: $('dfoot').offsetTop - box.offsetTop - 8, behavior: 'smooth'});
+};
 $('openCart').onclick = () => abrir(true);
 $('openCartTop').onclick = () => abrir(true);
 $('closeCart').onclick = () => abrir(false);
