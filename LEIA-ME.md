@@ -11,8 +11,10 @@ No `index.html`, perto do fim do arquivo, fica o bloco **CONFIGURAÇÃO**:
 const CONFIG = {
   whatsapp: "5584986751867",        // 55 + DDD + número, só dígitos
   loja: "Lidi Natura",              // nome exibido no topo e no rodapé
-  taxaCartao: 7,                    // acréscimo do cartão, em %
-  parcelas: 3                       // número máximo de parcelas no cartão
+  parcelasMax: 12,                  // até quantas vezes o cliente pode parcelar
+  taxaParcelado: 5.59,              // % fixo cobrado pela maquineta no parcelado
+  taxaPorParcela: 2.99,             // % adicional por parcela
+  brindeMin: 200                    // valor do pedido que dá direito ao brinde surpresa
 };
 ```
 
@@ -21,9 +23,20 @@ recalcula tudo sozinho (preço parcelado nos produtos, total do carrinho e mensa
 
 ## Formas de pagamento
 
-- **Pix à vista** — é o preço que aparece em destaque em cada produto.
-- **Cartão em até 3x** — acréscimo de 7% (taxa da maquineta). O cliente escolhe no carrinho
-  e o total é recalculado na hora; cada produto já mostra "ou 3x de R$ XX,XX no cartão".
+- **À vista (Pix, débito ou crédito 1x)** — sem acréscimo. É o preço em destaque no produto.
+- **Parcelado no cartão, até 12x** — acréscimo de 5,59% + 2,99% por parcela.
+  Ex: 3x → 14,56%; 6x → 23,53%; 12x → 41,47%.
+  O cliente escolhe as parcelas no carrinho. Por decisão sua, **no parcelado o site mostra
+  apenas "3x de R$ 87,83"** — sem exibir o valor total nem a porcentagem.
+
+## Brinde surpresa
+
+Pedidos com **R$ 200 ou mais em produtos** (valor à vista, sem o acréscimo do cartão)
+dão direito a um brinde surpresa. O carrinho mostra quanto falta para atingir, e o aviso
+vai junto na mensagem do WhatsApp. Para mudar o valor, altere `brindeMin` no `CONFIG`.
+
+As artes da promoção estão em `marca/banner-brinde.png` (quadrado) e
+`marca/banner-brinde-story.png` (story).
 
 ## 2. Testar no computador
 

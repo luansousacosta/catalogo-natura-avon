@@ -9,13 +9,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Lidi Natura">
 <meta property="og:title" content="Lidi Natura — Catálogo Natura & Avon">
-<meta property="og:description" content="417 produtos com até 70% de desconto. Pix à vista ou cartão em até 3x. Monte seu pedido e finalize no WhatsApp.">
+<meta property="og:description" content="417 produtos com até 70% de desconto. Pix ou cartão à vista sem acréscimo, parcelamos em até 12x. Brinde surpresa acima de R$ 200.">
 <meta property="og:url" content="https://luansousacosta.github.io/catalogo-natura-avon/">
 <meta property="og:image" content="https://luansousacosta.github.io/catalogo-natura-avon/marca/preview-link.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="Lidi Natura — catálogo de perfumaria e beleza Natura e Avon com preços especiais. Pix à vista ou cartão em até 3x. Peça pelo WhatsApp.">
+<meta name="description" content="Lidi Natura — catálogo de perfumaria e beleza Natura e Avon. Pix ou cartão à vista sem acréscimo, em até 12x no parcelado. Brinde acima de R$ 200. Peça pelo WhatsApp.">
 <meta name="theme-color" content="#fffdf9">
 <style>
 :root{
@@ -27,6 +27,7 @@
   --sh-hover:0 2px 6px rgba(58,42,29,.07), 0 18px 40px -14px rgba(58,42,29,.28);
 }
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0; background:var(--bg); color:var(--ink);
@@ -64,6 +65,24 @@ input,select,textarea{font:inherit;color:inherit}
 .perks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
 .perk{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.8);border:1px solid rgba(217,102,31,.16);color:var(--deep);padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:600}
 .perk svg{opacity:.85;color:var(--brand)}
+
+/* ---------- faixa da promoção ---------- */
+.promo{background:linear-gradient(100deg,#3a2a1d 0%,#5b3d21 55%,#8a4f1d 100%);color:#fdf3e6}
+.promo .wrap{display:flex;align-items:center;gap:16px;padding:16px 18px}
+.promo .ico{font-size:30px;line-height:1;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+.promo .txt{flex:1;min-width:0;line-height:1.35}
+.promo .txt b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.promo .txt span{font-size:12.5px;color:#e2cdb4}
+.promo .txt strong{color:#ffd9a3;font-weight:800}
+.btn.small{padding:10px 18px;font-size:13.5px;background:#fff;color:var(--deep)}
+.btn.small:hover{background:#ffd9a3}
+@media(max-width:520px){
+  .promo .wrap{gap:12px;padding:13px 16px}
+  .promo .ico{font-size:24px}
+  .promo .txt b{font-size:14px}
+  .promo .txt span{font-size:11.5px}
+  .btn.small{display:none}
+}
 
 /* ---------- barra de filtros ---------- */
 .tools{position:sticky;top:0;z-index:40;background:rgba(255,253,249,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
@@ -143,7 +162,7 @@ main .wrap{padding-top:20px;padding-bottom:10px}
 .dhead{display:flex;align-items:center;gap:10px;padding:18px;border-bottom:1px solid var(--line);background:var(--surface)}
 .dhead b{font-size:17px;letter-spacing:-.02em;margin-right:auto}
 .dhead button{width:32px;height:32px;border-radius:50%;background:var(--cream);color:var(--muted);font-size:19px;line-height:1;display:grid;place-items:center}
-.ditems{flex:1;overflow:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.ditems{flex:1 1 auto;min-height:78px;overflow:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px}
 .item{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px}
 .item .pic{width:62px;height:62px;flex:none;border-radius:9px;background:linear-gradient(160deg,#fdf7f0,#f7f0e6);display:grid;place-items:center;overflow:hidden}
 .item .pic img{width:100%;height:100%;object-fit:contain;padding:4px;mix-blend-mode:multiply}
@@ -157,9 +176,15 @@ main .wrap{padding-top:20px;padding-bottom:10px}
 .qty span{font-size:13px;font-weight:700;min-width:18px;text-align:center}
 .rm{color:#a89786;font-size:11.5px;text-decoration:underline}
 .item .val{margin-left:auto;font-weight:700;font-size:14px;white-space:nowrap}
-.dfoot{border-top:1px solid var(--line);background:var(--surface);padding:16px 18px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.dfoot{flex:none;border-top:1px solid var(--line);background:var(--surface);padding:16px 18px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
 .paylabel{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .pay{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
+#boxParcelas label{display:block;margin-bottom:6px}
+#selParcelas{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--bg);outline:none;font-size:14.5px;font-weight:600}
+#selParcelas:focus{border-color:var(--brand)}
+.brinde{display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:var(--r-sm);font-size:12.5px;line-height:1.35;background:#f4f8f4;border:1px solid #dbe8dc;color:#2f5c3c}
+.brinde.falta{background:#fff8f1;border-color:#f3ddc4;color:#8a5a2b}
+.brinde b{font-weight:800}
 .payopt{border:1.5px solid var(--line);border-radius:var(--r-sm);padding:10px 11px;text-align:left;background:var(--bg);transition:.16s;line-height:1.25}
 .payopt b{display:block;font-size:13.5px;font-weight:700}
 .payopt small{font-size:11px;color:var(--muted)}
@@ -194,7 +219,11 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
   .grid{grid-template-columns:repeat(2,1fr);gap:11px}
   .info{padding:11px 11px 13px}
   .por b{font-size:18px}
-  .payopt{padding:9px 10px}
+  .payopt{padding:8px 10px}
+  #selParcelas{padding:9px 11px;font-size:13.5px}
+  .brinde{padding:9px 11px;font-size:11.5px}
+  .field input,.field textarea{padding:9px 12px}
+  .field label,.paylabel{font-size:10.5px}
   .payopt b{font-size:12.5px}
   .payopt small{font-size:10px}
   .dfoot{gap:10px;padding:14px 16px calc(14px + env(safe-area-inset-bottom))}
@@ -204,7 +233,7 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 </head>
 <body>
 
-<div class="topbar"><div class="wrap"><span><b>Pix à vista</b> ou <b>cartão em até 3x</b> · Preços válidos enquanto durar o estoque</span></div></div>
+<div class="topbar"><div class="wrap"><span><b>Pix, débito ou crédito à vista sem acréscimo</b> · Parcelamos em até 12x · <b>Brinde surpresa</b> acima de R$ 200</span></div></div>
 
 <div class="brandbar"><div class="wrap">
   <div class="mark">
@@ -234,10 +263,20 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
   <p>Produtos originais com preço de revenda. Monte seu pedido e finalize direto no WhatsApp.</p>
   <div class="perks">
     <span class="perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg> Pix à vista</span>
-    <span class="perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg> Cartão em até 3x</span>
+    <span class="perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg> Cartão à vista sem acréscimo</span>
     <span class="perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-4.4-7-10a7 7 0 1 1 14 0c0 5.6-7 10-7 10Z"/><circle cx="12" cy="11" r="2.4"/></svg> Entrega a combinar</span>
+    <span class="perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"/></svg> Brinde acima de R$ 200</span>
     <span class="perk" id="perkQtd">417 produtos disponíveis</span>
   </div>
+</div></section>
+
+<section class="promo"><div class="wrap">
+  <span class="ico">🎁</span>
+  <div class="txt">
+    <b>Ganhe um brinde surpresa</b>
+    <span>Em pedidos acima de <strong id="promoValor">R$ 200</strong> — escolhido a dedo para você, sem custo nenhum.</span>
+  </div>
+  <button class="btn small" id="promoBtn">Ver produtos</button>
 </div></section>
 
 <div class="tools"><div class="wrap">
@@ -267,7 +306,8 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 
 <footer><div class="wrap">
   <b id="footNome">Lidi Natura</b><br>
-  Pagamento em Pix à vista ou cartão em até 3x (com acréscimo da maquineta).<br>
+  Pix, débito ou crédito à vista sem acréscimo · Parcelado em até 12x com acréscimo.<br>
+  Brinde surpresa em pedidos acima de R$ 200.<br>
   Sem reservas · Preços válidos enquanto durar o estoque.
   <div class="small">Revendedor(a) autônomo(a) de produtos Natura e Avon. Página independente, sem vínculo oficial com as marcas.</div>
 </div></footer>
@@ -285,17 +325,22 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
     <div>
       <span class="paylabel">Forma de pagamento</span>
       <div class="pay">
-        <button class="payopt on" id="payPix"><b>Pix à vista</b><small>Valor do site, sem acréscimo</small></button>
-        <button class="payopt" id="payCard"><b>Cartão até 3x</b><small id="taxaTxt">+7% da maquineta</small></button>
+        <button class="payopt on" id="payPix"><b>À vista</b><small>Pix, débito ou crédito — sem acréscimo</small></button>
+        <button class="payopt" id="payCard"><b>Parcelado</b><small id="taxaTxt">no cartão, com acréscimo</small></button>
       </div>
     </div>
+    <div id="boxParcelas" hidden>
+      <label class="paylabel" for="selParcelas">Em quantas vezes</label>
+      <select id="selParcelas"></select>
+    </div>
+    <div class="brinde" id="brinde" hidden></div>
     <div class="field"><label for="cliente">Seu nome</label><input id="cliente" placeholder="Como podemos te chamar?" autocomplete="name"></div>
     <div class="field"><label for="obs">Observação (opcional)</label><textarea id="obs" rows="2" placeholder="Ex: entrega no bairro, retirar no sábado…"></textarea></div>
     <div class="totbox">
-      <div class="linha"><span>Subtotal</span><span id="valSub">R$ 0,00</span></div>
+      <div class="linha" id="linhaSub"><span>Subtotal</span><span id="valSub">R$ 0,00</span></div>
       <div class="linha" id="linhaTaxa" hidden><span id="lblTaxa">Acréscimo cartão</span><span id="valTaxa">R$ 0,00</span></div>
       <div class="linha eco" id="linhaEco" hidden><span>Você economiza</span><span id="valEco">R$ 0,00</span></div>
-      <div class="tot"><span>Total</span><b id="drawerTotal">R$ 0,00</b></div>
+      <div class="tot"><span id="lblTotal">Total</span><b id="drawerTotal">R$ 0,00</b></div>
       <div class="parcinfo" id="parcInfo"></div>
     </div>
     <button class="btn wa" id="finalizar">
@@ -316,34 +361,40 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 const CONFIG = {
   whatsapp: "5584986751867",        // 55 + DDD + número, só dígitos
   loja: "Lidi Natura",              // nome exibido no topo e no rodapé
-  taxaCartao: 7,                    // acréscimo do cartão, em %
-  parcelas: 3                       // número máximo de parcelas no cartão
+  parcelasMax: 12,                  // até quantas vezes o cliente pode parcelar
+  taxaParcelado: 5.59,              // % fixo cobrado pela maquineta no parcelado
+  taxaPorParcela: 2.99,             // % adicional por parcela
+  brindeMin: 200                    // valor do pedido que dá direito ao brinde surpresa
 };
+// À vista (Pix, débito ou crédito 1x) não tem acréscimo.
+// Parcelado em N vezes: acréscimo = taxaParcelado + taxaPorParcela × N.
 /* ========================================================== */
 
 const $ = id => document.getElementById(id);
 const BRL = v => (v == null ? "Sob consulta" : v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}));
 const norm = s => (s||"").normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-const TAXA = 1 + CONFIG.taxaCartao / 100;
+const pct = n => n < 2 ? 0 : CONFIG.taxaParcelado + CONFIG.taxaPorParcela * n;  // % de acréscimo
+const fator = n => 1 + pct(n) / 100;
 
 $('lojaNome').textContent = CONFIG.loja;
 $('footNome').textContent = CONFIG.loja;
-$('taxaTxt').textContent = '+' + CONFIG.taxaCartao + '% da maquineta';
-$('lblTaxa').textContent = 'Acréscimo cartão (' + CONFIG.taxaCartao + '%)';
-$('payCard').querySelector('b').textContent = 'Cartão até ' + CONFIG.parcelas + 'x';
+$('payCard').querySelector('b').textContent = 'Parcelado até ' + CONFIG.parcelasMax + 'x';
 document.title = CONFIG.loja + ' — Catálogo Natura & Avon';
 
 PRODUTOS.forEach(p => { p._b = norm(p.nome + ' ' + p.marca + ' ' + p.categoria + ' ' + (p.tamanho||'')); });
 $('perkQtd').textContent = PRODUTOS.length + ' produtos disponíveis';
+$('promoValor').textContent = 'R$ ' + CONFIG.brindeMin;
+$('promoBtn').onclick = () => window.scrollTo({top: document.querySelector('.tools').offsetTop - 4, behavior: 'smooth'});
 
 const CATS = [...new Set(PRODUTOS.map(p => p.categoria))];
 const ORDEM_CAT = {}; CATS.forEach((c,i) => ORDEM_CAT[c] = i);
 let filtro = {cat:'Todos', marca:'Todas', q:'', sort:'rel'};
-let carrinho = {}, pagamento = 'pix';
+let carrinho = {}, pagamento = 'pix', parcelas = 2;
 try {
   const s = JSON.parse(localStorage.getItem('pedido_catalogo') || '{}');
   carrinho = s.itens || {};
   pagamento = s.pagamento || 'pix';
+  parcelas = Math.min(Math.max(s.parcelas || 2, 2), CONFIG.parcelasMax);
 } catch(e){ carrinho = {}; }
 
 /* ---------- filtros ---------- */
@@ -392,7 +443,7 @@ const grid = $('grid');
 function card(p){
   const el = document.createElement('article');
   el.className = 'card'; el.dataset.id = p.id;
-  const parcela = p.preco ? (p.preco * TAXA) / CONFIG.parcelas : null;
+  const parcela = p.preco ? (p.preco * fator(CONFIG.parcelasMax)) / CONFIG.parcelasMax : null;
   el.innerHTML =
     '<div class="thumb" ' + (p.img ? 'data-full="img/' + p.img + '"' : '') + '>' +
       (p.img ? '<img src="img/' + p.img + '" alt="' + p.nome + '" loading="lazy" decoding="async">' : '<span class="noimg">🧴</span>') +
@@ -406,7 +457,7 @@ function card(p){
       '<div class="pricebox">' +
         (p.de && p.preco ? '<div class="de">' + BRL(p.de) + '</div>' : '') +
         '<div class="por"><b>' + BRL(p.preco) + '</b>' + (p.preco ? '<i>no Pix</i>' : '') + '</div>' +
-        (parcela ? '<div class="parc">ou ' + CONFIG.parcelas + 'x de ' + BRL(parcela) + ' no cartão</div>' : '') +
+        (parcela ? '<div class="parc">ou até ' + CONFIG.parcelasMax + 'x de ' + BRL(parcela) + '</div>' : '') +
         '<div class="stock ' + (p.estoque <= 2 ? 'low' : '') + '"><span class="pip"></span>' +
           (p.estoque === 1 ? 'Última unidade' : p.estoque === 2 ? 'Últimas 2 unidades' : p.estoque + ' disponíveis') +
         '</div>' +
@@ -460,7 +511,7 @@ function setQtd(p, n){
   else carrinho[p.id] = {qtd: Math.min(n, p.estoque)};
   salvar(); repintar(p.id); atualizar();
 }
-const salvar = () => localStorage.setItem('pedido_catalogo', JSON.stringify({itens: carrinho, pagamento: pagamento}));
+const salvar = () => localStorage.setItem('pedido_catalogo', JSON.stringify({itens: carrinho, pagamento: pagamento, parcelas: parcelas}));
 const itens = () => Object.entries(carrinho)
   .map(([id, v]) => ({p: PRODUTOS.find(x => x.id == id), qtd: v.qtd}))
   .filter(i => i.p);
@@ -470,10 +521,13 @@ const totais = () => {
     sub: a.sub + (i.p.preco || 0) * i.qtd,
     cheio: a.cheio + (i.p.preco ? (i.p.de || i.p.preco) * i.qtd : 0)
   }), {qtd:0, sub:0, cheio:0});
-  t.taxa = pagamento === 'cartao' ? t.sub * (TAXA - 1) : 0;
+  t.n = pagamento === 'cartao' ? parcelas : 1;
+  t.taxa = t.sub * (fator(t.n) - 1);
   t.total = t.sub + t.taxa;
   t.eco = Math.max(0, t.cheio - t.sub);
-  t.parcela = t.total / CONFIG.parcelas;
+  t.parcela = t.total / t.n;
+  t.brinde = t.sub >= CONFIG.brindeMin;
+  t.faltaBrinde = Math.max(0, CONFIG.brindeMin - t.sub);
   return t;
 };
 
@@ -481,25 +535,49 @@ function setPagamento(v){
   pagamento = v;
   $('payPix').classList.toggle('on', v === 'pix');
   $('payCard').classList.toggle('on', v === 'cartao');
+  $('boxParcelas').hidden = v !== 'cartao';
   salvar(); atualizar();
 }
+
+function montarParcelas(){
+  const sub = totais().sub, sel = $('selParcelas');
+  sel.innerHTML = '';
+  for (let n = 2; n <= CONFIG.parcelasMax; n++){
+    const tot = sub * fator(n);
+    const o = document.createElement('option');
+    o.value = n;
+    o.textContent = sub > 0 ? n + 'x de ' + BRL(tot / n) : n + 'x';
+    if (n === parcelas) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+$('selParcelas').onchange = e => { parcelas = +e.target.value; salvar(); atualizar(); };
 $('payPix').onclick = () => setPagamento('pix');
 $('payCard').onclick = () => setPagamento('cartao');
 
 function atualizar(){
   const t = totais();
-  const rotulo = (t.total > 0 || !t.qtd) ? BRL(t.total) : 'A combinar';
+  const parcelado = pagamento === 'cartao' && t.qtd > 0;
+  const rotulo = parcelado ? t.n + 'x de ' + BRL(t.parcela) : ((t.total > 0 || !t.qtd) ? BRL(t.total) : 'A combinar');
   $('cartbar').classList.toggle('on', t.qtd > 0);
   $('barTotal').textContent = rotulo;
-  $('barQtd').textContent = t.qtd + (t.qtd === 1 ? ' item · ' : ' itens · ') + (pagamento === 'pix' ? 'Pix à vista' : 'cartão até ' + CONFIG.parcelas + 'x');
+  $('barQtd').textContent = t.qtd + (t.qtd === 1 ? ' item' : ' itens') + (parcelado ? ' · no cartão' : ' · à vista');
   $('headQtd').textContent = t.qtd;
   $('drawerTotal').textContent = rotulo;
   $('valSub').textContent = BRL(t.sub);
-  $('valTaxa').textContent = BRL(t.taxa);
-  $('linhaTaxa').hidden = pagamento !== 'cartao' || !t.sub;
+  $('linhaSub').hidden = parcelado;
+  $('linhaTaxa').hidden = true;
+  $('lblTotal').textContent = parcelado ? 'No cartão' : 'Total';
   $('valEco').textContent = BRL(t.eco);
   $('linhaEco').hidden = t.eco < 0.5;
-  $('parcInfo').textContent = (pagamento === 'cartao' && t.total > 0) ? 'em até ' + CONFIG.parcelas + 'x de ' + BRL(t.parcela) : '';
+  $('parcInfo').textContent = '';
+  const bx = $('brinde');
+  bx.hidden = !t.qtd;
+  bx.className = 'brinde' + (t.brinde ? '' : ' falta');
+  bx.innerHTML = t.brinde
+    ? '<span>🎁</span><span>Parabéns! Seu pedido dá direito a um <b>brinde surpresa</b>.</span>'
+    : '<span>🎁</span><span>Faltam <b>' + BRL(t.faltaBrinde) + '</b> em produtos para ganhar um <b>brinde surpresa</b>.</span>';
+  montarParcelas();
   desenharItens();
 }
 
@@ -560,20 +638,22 @@ $('finalizar').onclick = () => {
                  : '   ' + qtd + 'x (preço a combinar)\n';
   });
   m += '\nItens: ' + t.qtd;
-  m += '\nSubtotal: ' + BRL(t.sub);
   if (pagamento === 'cartao'){
-    m += '\nPagamento: Cartão (acréscimo de ' + CONFIG.taxaCartao + '% = ' + BRL(t.taxa) + ')';
-    m += '\n*Total: ' + (t.total > 0 ? BRL(t.total) : 'a combinar') + '* — em até ' + CONFIG.parcelas + 'x de ' + BRL(t.parcela);
+    m += '\nPagamento: Cartão parcelado';
+    m += '\n*' + t.n + 'x de ' + BRL(t.parcela) + '*';
   } else {
-    m += '\nPagamento: Pix à vista';
-    m += '\n*Total: ' + (t.total > 0 ? BRL(t.total) : 'a combinar') + '*';
+    m += '\nSubtotal: ' + BRL(t.sub);
+    m += '\nPagamento: à vista (Pix, débito ou crédito) — sem acréscimo';
+    m += '\n*Total: ' + BRL(t.total) + '*';
   }
   if (t.eco > 0.5) m += '\n(economia de ' + BRL(t.eco) + ')';
+  if (t.brinde) m += '\n🎁 Pedido acima de R$ ' + CONFIG.brindeMin + ' — com brinde surpresa!';
   if (nome) m += '\n\nNome: ' + nome;
   if (obs) m += (nome ? '\n' : '\n\n') + 'Obs: ' + obs;
   window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(m), '_blank');
 };
 
+montarParcelas();
 setPagamento(pagamento);
 render(true);
 atualizar();
