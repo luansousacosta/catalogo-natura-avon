@@ -140,6 +140,13 @@ main .wrap{padding-top:20px;padding-bottom:10px}
 .empty b{display:block;font-size:17px;color:var(--ink);margin-bottom:6px}
 #sentinel{height:1px}
 
+.card.esgotado .thumb img{filter:grayscale(.85);opacity:.55}
+.card.esgotado .name,.card.esgotado .por b{color:#8c7d70}
+.card.esgotado .de{display:none}
+.esg{position:absolute;inset:0;display:grid;place-items:center;background:rgba(255,253,249,.34)}
+.esg span{background:var(--deep);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:6px 14px;border-radius:999px;text-transform:uppercase}
+.indisp{margin-top:11px;width:100%;padding:11px;border-radius:999px;background:#f2ece5;color:#8c7d70;font-weight:600;font-size:13.5px;text-align:center;cursor:not-allowed}
+
 /* ---------- barra fixa ---------- */
 .cartbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line);box-shadow:0 -8px 30px -18px rgba(58,42,29,.5);transform:translateY(130%);transition:transform .28s cubic-bezier(.4,0,.2,1)}
 .cartbar.on{transform:none}
@@ -382,7 +389,7 @@ $('payCard').querySelector('b').textContent = 'Parcelado até ' + CONFIG.parcela
 document.title = CONFIG.loja + ' — Catálogo Natura & Avon';
 
 PRODUTOS.forEach(p => { p._b = norm(p.nome + ' ' + p.marca + ' ' + p.categoria + ' ' + (p.tamanho||'')); });
-$('perkQtd').textContent = PRODUTOS.length + ' produtos disponíveis';
+$('perkQtd').textContent = PRODUTOS.filter(p => p.estoque > 0).length + ' produtos disponíveis';
 $('promoValor').textContent = 'R$ ' + CONFIG.brindeMin;
 $('promoBtn').onclick = () => window.scrollTo({top: document.querySelector('.tools').offsetTop - 4, behavior: 'smooth'});
 
@@ -426,12 +433,13 @@ function listar(){
     (filtro.marca === 'Todas' || p.marca === filtro.marca.toUpperCase()) &&
     (!filtro.q || filtro.q.split(/\s+/).every(t => p._b.includes(t))));
   const s = filtro.sort;
-  if (s === 'rel') l.sort((a,b) =>
+  const fim = p => (p.estoque < 1 ? 1 : 0);   // esgotados sempre por último
+  if (s === 'rel') l.sort((a,b) => (fim(a) - fim(b)) ||
     (ORDEM_CAT[a.categoria] - ORDEM_CAT[b.categoria]) || ((b.preco ?? -1) - (a.preco ?? -1)));
-  else if (s === 'menor') l.sort((a,b) => (a.preco ?? 1e9) - (b.preco ?? 1e9));
-  else if (s === 'maior') l.sort((a,b) => (b.preco ?? -1) - (a.preco ?? -1));
-  else if (s === 'desc') l.sort((a,b) => (b.desconto||0) - (a.desconto||0));
-  else if (s === 'az') l.sort((a,b) => a.nome.localeCompare(b.nome,'pt-BR'));
+  else if (s === 'menor') l.sort((a,b) => (fim(a) - fim(b)) || ((a.preco ?? 1e9) - (b.preco ?? 1e9)));
+  else if (s === 'maior') l.sort((a,b) => (fim(a) - fim(b)) || ((b.preco ?? -1) - (a.preco ?? -1)));
+  else if (s === 'desc') l.sort((a,b) => (fim(a) - fim(b)) || ((b.desconto||0) - (a.desconto||0)));
+  else if (s === 'az') l.sort((a,b) => (fim(a) - fim(b)) || a.nome.localeCompare(b.nome,'pt-BR'));
   return l;
 }
 
@@ -442,12 +450,14 @@ const grid = $('grid');
 
 function card(p){
   const el = document.createElement('article');
-  el.className = 'card'; el.dataset.id = p.id;
+  const fora = p.estoque < 1;
+  el.className = 'card' + (fora ? ' esgotado' : ''); el.dataset.id = p.id;
   const parcela = p.preco ? (p.preco * fator(CONFIG.parcelasMax)) / CONFIG.parcelasMax : null;
   el.innerHTML =
     '<div class="thumb" ' + (p.img ? 'data-full="img/' + p.img + '"' : '') + '>' +
       (p.img ? '<img src="img/' + p.img + '" alt="' + p.nome + '" loading="lazy" decoding="async">' : '<span class="noimg">🧴</span>') +
-      (p.desconto && p.preco ? '<span class="off">-' + p.desconto + '%</span>' : '') +
+      (p.desconto && p.preco && !fora ? '<span class="off">-' + p.desconto + '%</span>' : '') +
+      (fora ? '<span class="esg"><span>Esgotado</span></span>' : '') +
       '<span class="bd">' + p.marca + '</span>' +
     '</div>' +
     '<div class="info">' +
@@ -457,9 +467,9 @@ function card(p){
       '<div class="pricebox">' +
         (p.de && p.preco ? '<div class="de">' + BRL(p.de) + '</div>' : '') +
         '<div class="por"><b>' + BRL(p.preco) + '</b>' + (p.preco ? '<i>no Pix</i>' : '') + '</div>' +
-        (parcela ? '<div class="parc">ou até ' + CONFIG.parcelasMax + 'x de ' + BRL(parcela) + '</div>' : '') +
+        (parcela && !fora ? '<div class="parc">ou até ' + CONFIG.parcelasMax + 'x de ' + BRL(parcela) + '</div>' : '') +
         '<div class="stock ' + (p.estoque <= 2 ? 'low' : '') + '"><span class="pip"></span>' +
-          (p.estoque === 1 ? 'Última unidade' : p.estoque === 2 ? 'Últimas 2 unidades' : p.estoque + ' disponíveis') +
+          (fora ? 'Produto esgotado' : p.estoque === 1 ? 'Última unidade' : p.estoque === 2 ? 'Últimas 2 unidades' : p.estoque + ' disponíveis') +
         '</div>' +
         '<div class="acao"></div>' +
       '</div>' +
@@ -469,6 +479,11 @@ function card(p){
 }
 
 function acao(p){
+  if (p.estoque < 1){
+    const b = document.createElement('div');
+    b.className = 'indisp'; b.textContent = 'Esgotado';
+    return b;
+  }
   const n = (carrinho[p.id] && carrinho[p.id].qtd) || 0;
   if (!n){
     const b = document.createElement('button');
@@ -514,7 +529,7 @@ function setQtd(p, n){
 const salvar = () => localStorage.setItem('pedido_catalogo', JSON.stringify({itens: carrinho, pagamento: pagamento, parcelas: parcelas}));
 const itens = () => Object.entries(carrinho)
   .map(([id, v]) => ({p: PRODUTOS.find(x => x.id == id), qtd: v.qtd}))
-  .filter(i => i.p);
+  .filter(i => i.p && i.p.estoque > 0);
 const totais = () => {
   const t = itens().reduce((a, i) => ({
     qtd: a.qtd + i.qtd,

@@ -89,7 +89,13 @@ Todos os dados estão em `produtos.js`, um produto por linha:
 - `preco` = seu preço de venda à vista (Pix)
 - `de` = preço de mercado riscado
 - `estoque` = quantidade disponível (o cliente não consegue pedir mais que isso)
-- Para tirar um produto do ar, apague a linha dele ou coloque `"estoque":0`
+- Para marcar como **esgotado**, coloque `"estoque":0` — o produto continua no catálogo,
+  com o selo "Esgotado", sem botão de compra e sempre no fim da lista
+- Para tirar do ar de vez, apague a linha dele
+
+Na planilha `Produtos_Natura_Avon_ML`, o disponível é calculado como
+**Estoque − Vendidos**; preenchendo a coluna "Vendidos" o item vira esgotado sozinho
+na próxima atualização.
 
 Depois de editar, salve o arquivo e suba a pasta de novo (no Netlify: arraste outra vez).
 
