@@ -88,7 +88,8 @@ Todos os dados estão em `produtos.js`, um produto por linha:
 
 - `preco` = seu preço de venda à vista — hoje calculado como
   **valor de referência da planilha menos 25%**, arredondado para terminar em ,90
-  (ex: ref R$ 116,90 → R$ 87,90). Três produtos sem referência na planilha
+  (ex: ref R$ 116,90 → R$ 87,90). Quando o custo é alto e os 25% deixariam menos de
+  10% de margem, o desconto cai para **10%** (hoje só o Chronos Protetor: R$ 106,90). Três produtos sem referência na planilha
   (Ekos Priprioca, Intuição e Iconic Collection) mantiveram o preço anterior
 - `de` = valor de referência riscado
 - `estoque` = quantidade disponível (o cliente não consegue pedir mais que isso)
