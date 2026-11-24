@@ -8,14 +8,15 @@
 <link rel="apple-touch-icon" href="marca/perfil-whatsapp.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Lidi Natura">
-<meta property="og:title" content="Lidi Natura — Catálogo Natura & Avon">
-<meta property="og:description" content="417 produtos com até 70% de desconto. Pix ou cartão à vista sem acréscimo, parcelamos em até 12x. Brinde surpresa acima de R$ 200.">
+<meta property="og:title" content="Black Friday Lidi Natura — até 25% off em Natura e Avon">
+<meta property="og:description" content="Black Friday de 24 a 30/11: até 25% off em 417 produtos Natura e Avon. Pix ou cartão à vista sem acréscimo, em até 12x. Brinde surpresa acima de R$ 200.">
 <meta property="og:url" content="https://luansousacosta.github.io/catalogo-natura-avon/">
-<meta property="og:image" content="https://luansousacosta.github.io/catalogo-natura-avon/marca/preview-link.png">
+<!-- durante a Black Friday; depois de 30/11 voltar para marca/preview-link.png -->
+<meta property="og:image" content="https://luansousacosta.github.io/catalogo-natura-avon/marca/bf-preview-link.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="Lidi Natura — catálogo de perfumaria e beleza Natura e Avon. Pix ou cartão à vista sem acréscimo, em até 12x no parcelado. Brinde acima de R$ 200. Peça pelo WhatsApp.">
+<meta name="description" content="Black Friday Lidi Natura: até 25% off em perfumaria e beleza Natura e Avon, de 24 a 30 de novembro. Pix ou cartão à vista sem acréscimo, em até 12x. Peça pelo WhatsApp.">
 <meta name="theme-color" content="#fffdf9">
 <style>
 :root{
@@ -65,6 +66,30 @@ input,select,textarea{font:inherit;color:inherit}
 .perks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
 .perk{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.8);border:1px solid rgba(217,102,31,.16);color:var(--deep);padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:600}
 .perk svg{opacity:.85;color:var(--brand)}
+
+/* ---------- black friday ---------- */
+.bfbar{background:#0d0d0d;color:#f3e3c3}
+.bfbar .wrap{display:flex;align-items:center;justify-content:center;gap:10px 18px;padding:11px 18px;flex-wrap:wrap;text-align:center}
+.bfbar .marca{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:#fff}
+.bfbar .marca i{font-style:normal;color:#f0b73f}
+.bfbar .oferta{font-size:12.5px;color:#d8c49b}
+.bfbar .oferta b{color:#f0b73f;font-weight:800}
+.bfbar .relogio{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:#9a9186;font-variant-numeric:tabular-nums}
+.bfbar .relogio span{background:#1d1d1d;border:1px solid #343434;border-radius:7px;padding:4px 6px;font-size:12.5px;font-weight:800;color:#fff;min-width:32px;text-align:center}
+.bfbar .relogio em{font-style:normal;font-size:9px;color:#8e8578;margin-left:1px}
+.eyebrow.bf{background:#0d0d0d;border-color:#0d0d0d;color:#f0b73f;margin-left:7px}
+.bfsel{display:inline-block;background:#0d0d0d;color:#f0b73f;font-size:9px;font-weight:900;letter-spacing:.13em;padding:3px 7px;border-radius:5px;margin-bottom:6px}
+.card .off.bf{background:#0d0d0d;color:#f0b73f}
+
+@media(max-width:560px){
+  .bfbar .wrap{gap:5px 10px;padding:9px 14px}
+  .bfbar .marca{font-size:12.5px;letter-spacing:.18em}
+  .bfbar .oferta{font-size:11px;width:100%;margin-top:-2px}
+  .bfbar .relogio{font-size:10px}
+  .bfbar .relogio span{min-width:27px;padding:3px 5px;font-size:11.5px}
+  body.temBF .topbar{display:none}   /* as condições já aparecem nos selos do banner */
+  .perk{font-size:11.5px;padding:7px 11px;gap:6px}
+}
 
 /* ---------- faixa da promoção ---------- */
 .promo{background:linear-gradient(100deg,#3a2a1d 0%,#5b3d21 55%,#8a4f1d 100%);color:#fdf3e6}
@@ -248,6 +273,11 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 </head>
 <body>
 
+<div class="bfbar" id="bfbar" hidden><div class="wrap">
+  <span class="marca">Black <i>Friday</i></span>
+  <span class="oferta"><b>até 25% OFF</b> em todo o catálogo</span>
+  <span class="relogio" id="bfrelogio"></span>
+</div></div>
 <div class="topbar"><div class="wrap"><span><b>Pix, débito ou crédito à vista sem acréscimo</b> · Parcelamos em até 12x · <b>Brinde surpresa</b> acima de R$ 200</span></div></div>
 
 <div class="brandbar"><div class="wrap">
@@ -273,7 +303,7 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 </div></div>
 
 <section class="hero"><div class="wrap">
-  <span class="eyebrow">Lidi Natura</span>
+  <span class="eyebrow">Lidi Natura</span><span class="eyebrow bf" id="bfSelo" hidden>Black Friday</span>
   <h1>Perfumaria &amp; Beleza<br><em>Natura e Avon</em></h1>
   <p>Produtos originais com preço de revenda. Monte seu pedido e finalize direto no WhatsApp.</p>
   <div class="perks">
@@ -321,6 +351,7 @@ footer .small{margin-top:12px;font-size:11.5px;color:#b3a08c}
 
 <footer><div class="wrap">
   <b id="footNome">Lidi Natura</b><br>
+  <span id="bfRodape" hidden><b>Black Friday de 24 a 30 de novembro</b> · até 25% off em todo o catálogo.<br></span>
   Pix, débito ou crédito à vista sem acréscimo · Parcelado em até 12x com acréscimo.<br>
   Brinde surpresa em pedidos acima de R$ 200.<br>
   Sem reservas · Preços válidos enquanto durar o estoque.
@@ -387,7 +418,11 @@ const CONFIG = {
   parcelasMax: 12,                  // até quantas vezes o cliente pode parcelar
   taxaParcelado: 5.59,              // % fixo cobrado pela maquineta no parcelado
   taxaPorParcela: 2.99,             // % adicional por parcela
-  brindeMin: 200                    // valor do pedido que dá direito ao brinde surpresa
+  brindeMin: 200,                   // valor do pedido que dá direito ao brinde surpresa
+  blackFriday: {                    // fora desse período o site volta ao normal sozinho
+    inicio: "2026-11-24T00:00:00",
+    fim:    "2026-11-30T23:59:59"
+  }
 };
 // À vista (Pix, débito ou crédito 1x) não tem acréscimo.
 // Parcelado em N vezes: acréscimo = taxaParcelado + taxaPorParcela × N.
@@ -403,6 +438,27 @@ $('lojaNome').textContent = CONFIG.loja;
 $('footNome').textContent = CONFIG.loja;
 $('payCard').querySelector('b').textContent = 'Parcelado até ' + CONFIG.parcelasMax + 'x';
 document.title = CONFIG.loja + ' — Catálogo Natura & Avon';
+
+/* ---------- black friday: liga e desliga sozinha pelas datas ---------- */
+const BF_INI = new Date(CONFIG.blackFriday.inicio), BF_FIM = new Date(CONFIG.blackFriday.fim);
+const BF = (() => { const a = new Date(); return a >= BF_INI && a <= BF_FIM; })();
+
+function relogioBF(){
+  const falta = BF_FIM - new Date();
+  if (falta <= 0){ location.reload(); return; }
+  const d = Math.floor(falta / 864e5), h = Math.floor(falta / 36e5) % 24,
+        m = Math.floor(falta / 6e4) % 60, sg = Math.floor(falta / 1e3) % 60;
+  const cx = (v, rot) => '<span>' + String(v).padStart(2, '0') + '<em>' + rot + '</em></span>';
+  $('bfrelogio').innerHTML = 'termina em ' + (d ? cx(d, 'd') : '') + cx(h, 'h') + cx(m, 'm') + cx(sg, 's');
+}
+if (BF){
+  document.body.classList.add('temBF');
+  $('bfbar').hidden = false;
+  $('bfSelo').hidden = false;
+  $('bfRodape').hidden = false;
+  relogioBF();
+  setInterval(relogioBF, 1000);
+}
 
 PRODUTOS.forEach(p => { p._b = norm(p.nome + ' ' + p.marca + ' ' + p.categoria + ' ' + (p.tamanho||'')); });
 $('perkQtd').textContent = PRODUTOS.filter(p => p.estoque > 0).length + ' produtos disponíveis';
@@ -472,7 +528,7 @@ function card(p){
   el.innerHTML =
     '<div class="thumb" ' + (p.img ? 'data-full="img/' + p.img + '"' : '') + '>' +
       (p.img ? '<img src="img/' + p.img + '" alt="' + p.nome + '" loading="lazy" decoding="async">' : '<span class="noimg">🧴</span>') +
-      (p.desconto && p.preco && !fora ? '<span class="off">-' + p.desconto + '%</span>' : '') +
+      (p.desconto && p.preco && !fora ? '<span class="off' + (BF ? ' bf' : '') + '">-' + p.desconto + '%</span>' : '') +
       (fora ? '<span class="esg"><span>Esgotado</span></span>' : '') +
       '<span class="bd">' + p.marca + '</span>' +
     '</div>' +
@@ -481,6 +537,7 @@ function card(p){
       '<div class="meta">' + (p.tamanho || '') + '</div>' +
       (p.tag ? '<div class="tagline">' + (p.tag.length > 34 ? p.tag.slice(0,34) + '…' : p.tag) + '</div>' : '') +
       '<div class="pricebox">' +
+        (BF && p.desconto && p.preco && !fora ? '<div class="bfsel">BLACK FRIDAY</div>' : '') +
         (p.de && p.preco ? '<div class="de">' + BRL(p.de) + '</div>' : '') +
         '<div class="por"><b>' + BRL(p.preco) + '</b>' + (p.preco ? '<i>no Pix</i>' : '') + '</div>' +
         (parcela && !fora ? '<div class="parc">ou até ' + CONFIG.parcelasMax + 'x de ' + BRL(parcela) + '</div>' : '') +

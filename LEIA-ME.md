@@ -29,6 +29,20 @@ recalcula tudo sozinho (preço parcelado nos produtos, total do carrinho e mensa
   O cliente escolhe as parcelas no carrinho. Por decisão sua, **no parcelado o site mostra
   apenas "3x de R$ 87,83"** — sem exibir o valor total nem a porcentagem.
 
+## Black Friday (24 a 30 de novembro de 2026)
+
+O site liga e desliga o tema sozinho pelas datas em `CONFIG.blackFriday`
+(`inicio` e `fim`). Enquanto está ativo aparecem: faixa preta no topo com contagem
+regressiva, selo "Black Friday" no banner e nos produtos, selo de desconto em preto
+e dourado, e uma linha no rodapé. Passado o dia 30, tudo volta ao normal sem mexer em nada.
+
+**Os preços não mudaram para a Black Friday** — continuam 25% abaixo do valor de
+referência, como já estavam. A campanha é de comunicação.
+
+Artes: `marca/bf-quadrado.png` (feed e grupos) e `marca/bf-story.png` (status).
+Depois do dia 30, troque a linha `og:image` do `index.html` de `bf-preview-link.png`
+de volta para `preview-link.png` (é a imagem que aparece ao compartilhar o link).
+
 ## Brinde surpresa
 
 Pedidos com **R$ 200 ou mais em produtos** (valor à vista, sem o acréscimo do cartão)
