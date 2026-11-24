@@ -86,8 +86,11 @@ Todos os dados estão em `produtos.js`, um produto por linha:
  "tamanho":"170 ML","de":116.9,"preco":64.9,"desconto":48,"estoque":2,"img":"001-....jpg"}
 ```
 
-- `preco` = seu preço de venda à vista (Pix)
-- `de` = preço de mercado riscado
+- `preco` = seu preço de venda à vista — hoje calculado como
+  **valor de referência da planilha menos 25%**, arredondado para terminar em ,90
+  (ex: ref R$ 116,90 → R$ 87,90). Três produtos sem referência na planilha
+  (Ekos Priprioca, Intuição e Iconic Collection) mantiveram o preço anterior
+- `de` = valor de referência riscado
 - `estoque` = quantidade disponível (o cliente não consegue pedir mais que isso)
 - Para marcar como **esgotado**, coloque `"estoque":0` — o produto continua no catálogo,
   com o selo "Esgotado", sem botão de compra e sempre no fim da lista
