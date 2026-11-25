@@ -96,6 +96,17 @@ Dê dois cliques em `index.html` — abre no navegador e funciona 100% offline.
 
 ## 3. Colocar no ar (link para mandar aos clientes)
 
+**O site está no ar em https://lidinatura.com.br** (domínio registrado na Umbler,
+GitHub Pages no repositório `luansousacosta/catalogo-natura-avon`). Na Umbler o DNS tem
+só os quatro registros `A` do GitHub (185.199.108 a 111 .153) e o `www` como CNAME para a
+raiz; o redirecionamento por iframe da Umbler fica desligado, senão ele recria um registro
+próprio e derruba o site. O arquivo `CNAME` na raiz do repositório é o que amarra o
+domínio — não apague.
+
+O endereço antigo (`luansousacosta.github.io/catalogo-natura-avon/`) redireciona para o
+domínio novo, então links já enviados em status e grupos continuam funcionando.
+
+
 **Opção mais fácil — Netlify Drop (grátis, 1 minuto, sem cadastro para testar):**
 1. Acesse https://app.netlify.com/drop
 2. Arraste a pasta `catalogo-online` inteira para a página
