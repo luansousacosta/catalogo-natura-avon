@@ -52,6 +52,44 @@ vai junto na mensagem do WhatsApp. Para mudar o valor, altere `brindeMin` no `CO
 As artes da promoção estão em `marca/banner-brinde.png` (quadrado) e
 `marca/banner-brinde-story.png` (story).
 
+## Medição (Meta Pixel e Google Analytics)
+
+No topo do `index.html` existe o bloco **MEDIÇÃO**:
+
+```js
+window.MEDICAO = {
+  pixel: "",   // Meta Pixel — Gerenciador de Eventos > Fontes de dados
+  ga4:   ""    // Google Analytics 4 (opcional)
+};
+```
+
+Enquanto estiverem vazios, nada é carregado e a página não envia nada para ninguém.
+Colando o ID do pixel, o site passa a registrar sozinho:
+
+| Evento no pixel | Quando acontece |
+|---|---|
+| `PageView` | abriu o catálogo |
+| `ViewContent` | tocou na foto de um produto para ampliar |
+| `AddToCart` | adicionou ou aumentou a quantidade (valor = preço do item) |
+| `InitiateCheckout` | abriu o pedido (valor = subtotal, nº de itens) |
+| `Search` | buscou algo com 3 letras ou mais |
+| `Lead` + `PedidoWhatsApp` | clicou em **Finalizar no WhatsApp** (valor = subtotal) |
+
+**O pixel não vê a venda**, porque ela se fecha no WhatsApp. Ele vê até o clique em
+Finalizar. Para saber de verdade quais pedidos vieram do anúncio, a página guarda a
+origem da visita (UTM ou `fbclid`) por 30 dias e acrescenta uma linha discreta no fim
+da mensagem do WhatsApp:
+
+```
+(ref: meta/bf_litoral_sul)
+```
+
+Pedido com essa linha = cliente que chegou pelo anúncio. Sem a linha = orgânico
+(status, grupo, indicação). É esse o número para comparar com o gasto do anúncio.
+
+Com o pixel ativo também é possível criar no Gerenciador de Anúncios um público de
+quem visitou o catálogo ou adicionou ao carrinho e não finalizou — remarketing barato.
+
 ## 2. Testar no computador
 
 Dê dois cliques em `index.html` — abre no navegador e funciona 100% offline.

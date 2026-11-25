@@ -18,6 +18,47 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Black Friday Lidi Natura: até 25% off em perfumaria e beleza Natura e Avon, de 24 a 30 de novembro. Pix ou cartão à vista sem acréscimo, em até 12x. Peça pelo WhatsApp.">
 <meta name="theme-color" content="#fffdf9">
+
+<!-- ===================== MEDIÇÃO =====================
+     Cole os IDs abaixo. Deixe "" (vazio) para desligar.
+     pixel = Meta Pixel  ·  ga4 = Google Analytics 4
+     ================================================== -->
+<script>
+window.MEDICAO = {
+  pixel: "1487402966940780",   // Lidi Natura — conjunto de dados da BM Sousa Costa  (Gerenciador de Eventos > Fontes de dados)
+  ga4:   ""    // ex: "G-AB12CD34EF"      (opcional)
+};
+</script>
+<script>
+/* carregador e disparador de eventos — não precisa editar */
+(function(){
+  var M = window.MEDICAO || {};
+  if (M.pixel){
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', M.pixel);
+    fbq('track', 'PageView');
+  }
+  if (M.ga4){
+    var g = document.createElement('script');
+    g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=' + M.ga4;
+    document.head.appendChild(g);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date()); gtag('config', M.ga4);
+  }
+  var GA = {ViewContent:'view_item', AddToCart:'add_to_cart', InitiateCheckout:'begin_checkout',
+            Lead:'generate_lead', Search:'search'};
+  window.EV = function(nome, d){
+    d = d || {};
+    try { if (window.fbq) fbq('track', nome, d); } catch(e){}
+    try { if (window.gtag) gtag('event', GA[nome] || nome, d); } catch(e){}
+  };
+})();
+</script>
 <style>
 :root{
   --bg:#fffdf9; --cream:#fbf2e8; --surface:#fff; --ink:#241a12; --muted:#7c6a5c; --line:#efe4d7;
@@ -434,6 +475,21 @@ const norm = s => (s||"").normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowe
 const pct = n => n < 2 ? 0 : CONFIG.taxaParcelado + CONFIG.taxaPorParcela * n;  // % de acréscimo
 const fator = n => 1 + pct(n) / 100;
 
+/* ---------- de onde veio a visita (anúncio x orgânico) ---------- */
+const ORIGEM = (() => {
+  const q = new URLSearchParams(location.search);
+  let o = null;
+  if (q.get('utm_source') || q.get('fbclid'))
+    o = {src: q.get('utm_source') || 'meta', camp: q.get('utm_campaign') || '', t: Date.now()};
+  try {
+    if (o) localStorage.setItem('origem_visita', JSON.stringify(o));
+    else o = JSON.parse(localStorage.getItem('origem_visita') || 'null');
+    if (o && Date.now() - o.t > 2592e6) o = null;   // esquece depois de 30 dias
+  } catch(e){ o = null; }
+  return o;
+})();
+const marcaOrigem = () => ORIGEM ? '\n(ref: ' + [ORIGEM.src, ORIGEM.camp].filter(Boolean).join('/') + ')' : '';
+
 $('lojaNome').textContent = CONFIG.loja;
 $('footNome').textContent = CONFIG.loja;
 $('payCard').querySelector('b').textContent = 'Parcelado até ' + CONFIG.parcelasMax + 'x';
@@ -495,7 +551,13 @@ const chips = $('chips');
   chips.appendChild(b);
 });
 
-$('q').oninput = e => { filtro.q = norm(e.target.value); $('qclear').hidden = !e.target.value; render(true); };
+let tBusca;
+$('q').oninput = e => {
+  filtro.q = norm(e.target.value); $('qclear').hidden = !e.target.value; render(true);
+  const v = e.target.value.trim();
+  clearTimeout(tBusca);
+  if (v.length >= 3) tBusca = setTimeout(() => EV('Search', {search_string: v, search_term: v}), 1500);
+};
 $('qclear').onclick = () => { $('q').value = ''; filtro.q = ''; $('qclear').hidden = true; render(true); };
 $('sort').onchange = e => { filtro.sort = e.target.value; render(true); };
 
@@ -595,9 +657,12 @@ new IntersectionObserver(es => { if (es[0].isIntersecting && vistos < atual.leng
 
 /* ---------- pedido ---------- */
 function setQtd(p, n){
+  const antes = carrinho[p.id] ? carrinho[p.id].qtd : 0;
   if (n <= 0) delete carrinho[p.id];
   else carrinho[p.id] = {qtd: Math.min(n, p.estoque)};
   salvar(); repintar(p.id); atualizar();
+  if (n > antes) EV('AddToCart', {content_type:'product', content_ids:[String(p.id)],
+    content_name: p.nome, value: +(p.preco || 0).toFixed(2), currency:'BRL'});
 }
 const salvar = () => localStorage.setItem('pedido_catalogo', JSON.stringify({itens: carrinho, pagamento: pagamento, parcelas: parcelas}));
 const itens = () => Object.entries(carrinho)
@@ -702,7 +767,15 @@ function desenharItens(){
 }
 
 /* ---------- interações ---------- */
-const abrir = v => { $('drawer').classList.toggle('on', v); $('overlay').classList.toggle('on', v); document.body.style.overflow = v ? 'hidden' : ''; };
+const abrir = v => {
+  $('drawer').classList.toggle('on', v); $('overlay').classList.toggle('on', v);
+  document.body.style.overflow = v ? 'hidden' : '';
+  if (v){
+    const t = totais();
+    if (t.qtd) EV('InitiateCheckout', {value: +t.sub.toFixed(2), currency:'BRL', num_items: t.qtd,
+      content_type:'product', content_ids: itens().map(i => String(i.p.id))});
+  }
+};
 $('irPagamento').onclick = () => {
   const box = document.querySelector('.dbody');
   box.scrollTo({top: $('dfoot').offsetTop - box.offsetTop - 8, behavior: 'smooth'});
@@ -718,6 +791,9 @@ grid.addEventListener('click', e => {
   if (!t) return;
   $('lbimg').src = t.dataset.full;
   $('lb').classList.add('on');
+  const pv = PRODUTOS.find(x => x.id == t.closest('.card').dataset.id);
+  if (pv) EV('ViewContent', {content_type:'product', content_ids:[String(pv.id)],
+    content_name: pv.nome, value: +(pv.preco || 0).toFixed(2), currency:'BRL'});
 });
 $('lb').onclick = () => $('lb').classList.remove('on');
 document.addEventListener('keydown', e => { if (e.key === 'Escape'){ $('lb').classList.remove('on'); abrir(false); } });
@@ -747,6 +823,11 @@ $('finalizar').onclick = () => {
   if (t.brinde) m += '\n🎁 Pedido acima de R$ ' + CONFIG.brindeMin + ' — com brinde surpresa!';
   if (nome) m += '\n\nNome: ' + nome;
   if (obs) m += (nome ? '\n' : '\n\n') + 'Obs: ' + obs;
+  m += marcaOrigem();
+  EV('Lead', {value: +t.sub.toFixed(2), currency:'BRL', num_items: t.qtd,
+    content_type:'product', content_ids: l.map(i => String(i.p.id)),
+    content_name: (ORIGEM ? ORIGEM.src : 'direto')});
+  try { if (window.fbq) fbq('trackCustom', 'PedidoWhatsApp', {value: +t.sub.toFixed(2), currency:'BRL'}); } catch(e){}
   window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(m), '_blank');
 };
 
