@@ -58,8 +58,8 @@ No topo do `index.html` existe o bloco **MEDIÇÃO**:
 
 ```js
 window.MEDICAO = {
-  pixel: "",   // Meta Pixel — Gerenciador de Eventos > Fontes de dados
-  ga4:   ""    // Google Analytics 4 (opcional)
+  pixel: "1487402966940780",   // Meta Pixel "Lidi Natura"
+  ga4:   "G-9PNP418VNK"        // Google Analytics 4, fluxo "lidi natura"
 };
 ```
 
@@ -74,6 +74,14 @@ Colando o ID do pixel, o site passa a registrar sozinho:
 | `InitiateCheckout` | abriu o pedido (valor = subtotal, nº de itens) |
 | `Search` | buscou algo com 3 letras ou mais |
 | `Lead` + `PedidoWhatsApp` | clicou em **Finalizar no WhatsApp** (valor = subtotal) |
+
+O mesmo evento vai para o Google Analytics com o nome que ele usa: `view_item`,
+`add_to_cart`, `begin_checkout`, `search`, `generate_lead` e `pedido_whatsapp`, já com a
+lista de produtos no formato do GA4 (código, nome, marca, categoria, preço e quantidade),
+então os relatórios de produto e de funil preenchem sozinhos. No pedido vai também o
+parâmetro `origem` (ex: `meta/bf_litoral_sul` ou `direto`) — no GA4 ele só aparece nos
+relatórios depois de registrado como dimensão personalizada, em Administrador >
+Definições personalizadas.
 
 **O pixel não vê a venda**, porque ela se fecha no WhatsApp. Ele vê até o clique em
 Finalizar. Para saber de verdade quais pedidos vieram do anúncio, a página guarda a

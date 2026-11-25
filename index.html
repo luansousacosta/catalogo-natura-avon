@@ -27,7 +27,7 @@
 <script>
 window.MEDICAO = {
   pixel: "1487402966940780",   // Lidi Natura — conjunto de dados da BM Sousa Costa  (Gerenciador de Eventos > Fontes de dados)
-  ga4:   ""    // ex: "G-AB12CD34EF"      (opcional)
+  ga4:   "G-9PNP418VNK"    // fluxo "lidi natura" do Google Analytics
 };
 </script>
 <script>
@@ -51,12 +51,45 @@ window.MEDICAO = {
     window.gtag = function(){ dataLayer.push(arguments); };
     gtag('js', new Date()); gtag('config', M.ga4);
   }
+  /* nome do evento equivalente no GA4, que usa minúsculas com underscore */
   var GA = {ViewContent:'view_item', AddToCart:'add_to_cart', InitiateCheckout:'begin_checkout',
-            Lead:'generate_lead', Search:'search'};
+            Lead:'generate_lead', Search:'search', PedidoWhatsApp:'pedido_whatsapp'};
+  /* eventos padrão da Meta vão por 'track'; o resto por 'trackCustom' */
+  var PADRAO = {PageView:1, ViewContent:1, AddToCart:1, InitiateCheckout:1, Lead:1, Search:1};
+  /* EV('AddToCart', {valor, itens:[{id,nome,marca,categoria,preco,qtd}], busca, origem})
+     recebe um payload só e traduz para o formato de cada ferramenta */
   window.EV = function(nome, d){
     d = d || {};
-    try { if (window.fbq) fbq('track', nome, d); } catch(e){}
-    try { if (window.gtag) gtag('event', GA[nome] || nome, d); } catch(e){}
+    var itens = d.itens || [], valor = typeof d.valor === 'number' ? +d.valor.toFixed(2) : null;
+    try {
+      if (window.fbq){
+        var m = {currency:'BRL'};
+        if (valor != null) m.value = valor;
+        if (itens.length){
+          m.content_type = 'product';
+          m.content_ids = itens.map(function(i){ return String(i.id); });
+          m.contents = itens.map(function(i){ return {id:String(i.id), quantity:i.qtd || 1}; });
+          m.num_items = itens.reduce(function(a,i){ return a + (i.qtd || 1); }, 0);
+          if (itens.length === 1) m.content_name = itens[0].nome;
+        }
+        if (d.busca) m.search_string = d.busca;
+        if (d.origem) m.origem = d.origem;
+        fbq(PADRAO[nome] ? 'track' : 'trackCustom', nome, m);
+      }
+    } catch(e){}
+    try {
+      if (window.gtag){
+        var g = {};
+        if (valor != null){ g.value = valor; g.currency = 'BRL'; }
+        if (itens.length) g.items = itens.map(function(i){
+          return {item_id: String(i.id), item_name: i.nome, item_brand: i.marca,
+                  item_category: i.categoria, price: i.preco, quantity: i.qtd || 1};
+        });
+        if (d.busca) g.search_term = d.busca;
+        if (d.origem) g.origem = d.origem;
+        gtag('event', GA[nome] || nome, g);
+      }
+    } catch(e){}
   };
 })();
 </script>
@@ -489,6 +522,9 @@ const ORIGEM = (() => {
   } catch(e){ o = null; }
   return o;
 })();
+/* produto no formato que o EV espera */
+const evItem = (p, qtd) => ({id: p.id, nome: p.nome, marca: p.marca,
+  categoria: p.categoria, preco: p.preco || 0, qtd: qtd || 1});
 const marcaOrigem = () => ORIGEM ? '\n(ref: ' + [ORIGEM.src, ORIGEM.camp].filter(Boolean).join('/') + ')' : '';
 
 $('lojaNome').textContent = CONFIG.loja;
@@ -557,7 +593,7 @@ $('q').oninput = e => {
   filtro.q = norm(e.target.value); $('qclear').hidden = !e.target.value; render(true);
   const v = e.target.value.trim();
   clearTimeout(tBusca);
-  if (v.length >= 3) tBusca = setTimeout(() => EV('Search', {search_string: v, search_term: v}), 1500);
+  if (v.length >= 3) tBusca = setTimeout(() => EV('Search', {busca: v}), 1500);
 };
 $('qclear').onclick = () => { $('q').value = ''; filtro.q = ''; $('qclear').hidden = true; render(true); };
 $('sort').onchange = e => { filtro.sort = e.target.value; render(true); };
@@ -662,8 +698,8 @@ function setQtd(p, n){
   if (n <= 0) delete carrinho[p.id];
   else carrinho[p.id] = {qtd: Math.min(n, p.estoque)};
   salvar(); repintar(p.id); atualizar();
-  if (n > antes) EV('AddToCart', {content_type:'product', content_ids:[String(p.id)],
-    content_name: p.nome, value: +(p.preco || 0).toFixed(2), currency:'BRL'});
+  if (n > antes) EV('AddToCart', {valor: (p.preco || 0) * (n - antes),
+    itens: [evItem(p, n - antes)]});
 }
 const salvar = () => localStorage.setItem('pedido_catalogo', JSON.stringify({itens: carrinho, pagamento: pagamento, parcelas: parcelas}));
 const itens = () => Object.entries(carrinho)
@@ -773,8 +809,8 @@ const abrir = v => {
   document.body.style.overflow = v ? 'hidden' : '';
   if (v){
     const t = totais();
-    if (t.qtd) EV('InitiateCheckout', {value: +t.sub.toFixed(2), currency:'BRL', num_items: t.qtd,
-      content_type:'product', content_ids: itens().map(i => String(i.p.id))});
+    if (t.qtd) EV('InitiateCheckout', {valor: t.sub,
+      itens: itens().map(i => evItem(i.p, i.qtd))});
   }
 };
 $('irPagamento').onclick = () => {
@@ -793,8 +829,7 @@ grid.addEventListener('click', e => {
   $('lbimg').src = t.dataset.full;
   $('lb').classList.add('on');
   const pv = PRODUTOS.find(x => x.id == t.closest('.card').dataset.id);
-  if (pv) EV('ViewContent', {content_type:'product', content_ids:[String(pv.id)],
-    content_name: pv.nome, value: +(pv.preco || 0).toFixed(2), currency:'BRL'});
+  if (pv) EV('ViewContent', {valor: pv.preco || 0, itens: [evItem(pv, 1)]});
 });
 $('lb').onclick = () => $('lb').classList.remove('on');
 document.addEventListener('keydown', e => { if (e.key === 'Escape'){ $('lb').classList.remove('on'); abrir(false); } });
@@ -825,10 +860,10 @@ $('finalizar').onclick = () => {
   if (nome) m += '\n\nNome: ' + nome;
   if (obs) m += (nome ? '\n' : '\n\n') + 'Obs: ' + obs;
   m += marcaOrigem();
-  EV('Lead', {value: +t.sub.toFixed(2), currency:'BRL', num_items: t.qtd,
-    content_type:'product', content_ids: l.map(i => String(i.p.id)),
-    content_name: (ORIGEM ? ORIGEM.src : 'direto')});
-  try { if (window.fbq) fbq('trackCustom', 'PedidoWhatsApp', {value: +t.sub.toFixed(2), currency:'BRL'}); } catch(e){}
+  const pedido = {valor: t.sub, itens: l.map(i => evItem(i.p, i.qtd)),
+    origem: ORIGEM ? [ORIGEM.src, ORIGEM.camp].filter(Boolean).join('/') : 'direto'};
+  EV('Lead', pedido);
+  EV('PedidoWhatsApp', pedido);
   window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(m), '_blank');
 };
 
